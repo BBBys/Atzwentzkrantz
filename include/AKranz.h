@@ -6,4 +6,5 @@ const uint8_t NPX = 120;
 const uint8_t NPXKERZE = NPX/12;
 void setup();
 void loop();
+uint8_t Datum();
 #endif
