@@ -10,23 +10,26 @@
 #include "AKranz.h"
 #include "Kerze.h"
 Adafruit_NeoPixel pixels(NPX, NEOPIXELPIN, NEO_GRB + NEO_KHZ800);
-Kerze Kerzen[4];
+Kerze *Kerzen[4];
 void setup()
 {
+  log_i("Start...");
+  int i=Datum();
+  delay(30000);
+  log_i("%d",i);
   uint8_t start = 0;
-  Kerzen[0] = new Kerze(0, start,NPXKERZE);
+  Kerzen[0] = new Kerze(0, start, NPXKERZE, pixels);
   start += NPXKERZE;
-  Kerzen[1] = new Kerze(1, start, NPXKERZE);
+  Kerzen[1] = new Kerze(1, start, NPXKERZE, pixels);
   start += NPXKERZE;
-  Kerzen[2] = new Kerze(2, start, NPXKERZE);
+  Kerzen[2] = new Kerze(2, start, NPXKERZE, pixels);
   start += NPXKERZE;
-  Kerzen[3] = new Kerze(3, start, NPXKERZE);
+  Kerzen[3] = new Kerze(3, start, NPXKERZE, pixels);
 }
 void loop() {
   for (size_t i = 0; i < 4; i++)
   {
-    Kerzen[i].Paint();
+    Kerzen[i]->Paint();
   }
   pixels.show();
 }
-uint8_t Datum(){}

@@ -6,15 +6,16 @@ static const u_int8_t NEOPIXELPIN = 0;
 class Kerze
 {
 private:
-    uint8_t Länge,Nr,Start,Stand;
+   static  Adafruit_NeoPixel Pixels;
+    static uint32_t cROT, cGELB;
+    static const uint8_t Flamme = 3;
+    uint8_t Laenge, Nr, Start, Stand;
     bool Brennt;
 public:
-    Kerze(uint8_t nr,uint8_t start,uint8_t länge);
+    Kerze(uint8_t nr, uint8_t start, uint8_t laenge, Adafruit_NeoPixel pixels);
     ~Kerze();
     void Paint();
 };
-Kerze::~Kerze()
-{
-}
+//Kerze::~Kerze(){}
 
 #endif
