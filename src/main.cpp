@@ -13,23 +13,26 @@ Adafruit_NeoPixel pixels(NPX, NEOPIXELPIN, NEO_GRB + NEO_KHZ800);
 Kerze *Kerzen[4];
 void setup()
 {
+  uint8_t adventNummer,start;
   log_i("Start...");
-  int i=Datum();
-  delay(30000);
-  log_i("%d",i);
-  uint8_t start = 0;
-  Kerzen[0] = new Kerze(0, start, NPXKERZE, pixels);
+  adventNummer=Datum();
+  log_d("%d. Advent",adventNummer);
+  start = 0;
+  log_d("Kerzen");
+  for (u_int8_t i = 0; i < NKERZEN; i++)
+  {
+    bool brennt = (i + 1) >= adventNummer;
+    Kerzen[i] = new Kerze(0, start, NPXKERZE, brennt,pixels);
   start += NPXKERZE;
-  Kerzen[1] = new Kerze(1, start, NPXKERZE, pixels);
-  start += NPXKERZE;
-  Kerzen[2] = new Kerze(2, start, NPXKERZE, pixels);
-  start += NPXKERZE;
-  Kerzen[3] = new Kerze(3, start, NPXKERZE, pixels);
+  }
+    log_i("...setup");
 }
 void loop() {
-  for (size_t i = 0; i < 4; i++)
+  log_d("Paint");
+  for (uint8_t i = 0; i < NKERZEN; i++)
   {
     Kerzen[i]->Paint();
   }
   pixels.show();
+  delay(60000l);
 }

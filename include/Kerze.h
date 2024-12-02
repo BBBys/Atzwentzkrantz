@@ -2,7 +2,7 @@
 #ifndef _KERZE_H_
 #define _KERZE_H_
 #include <Adafruit_NeoPixel.h>
-static const u_int8_t NEOPIXELPIN = 0;
+static const u_int8_t NEOPIXELPIN = 0,NKERZEN=4;
 class Kerze
 {
 private:
@@ -12,7 +12,7 @@ private:
     uint8_t Laenge, Nr, Start, Stand;
     bool Brennt;
 public:
-    Kerze(uint8_t nr, uint8_t start, uint8_t laenge, Adafruit_NeoPixel pixels);
+    Kerze(uint8_t nr, uint8_t start, uint8_t laenge, bool brennt,Adafruit_NeoPixel pixels);
     ~Kerze();
     void Paint();
 };
