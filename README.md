@@ -6,13 +6,16 @@ Lichteffekte mit einer Neopixel-Kette, die vier brennende Kerzen darstellen
 
 ## Hardware
 
-sdseec ![xx](Bilder/d1.jpg)
-[]<Bilder/b2.jpg>
+![Bild 1](Bilder/d1.jpg)
+![Bild2](Bilder/b2.jpg)
 
 ## Status
 
 In Arbeit.
 
+* Datum wird bestimmt
+* Kerzen werden gezeichnet
+
 ## Quellen
 
-<adafruit/Adafruit_NeoPixel>
+![Adafruit Neopixel](adafruit/Adafruit_NeoPixel)

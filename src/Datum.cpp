@@ -3,7 +3,7 @@
  * @brief Adventskranz - Funktion, um den vierten Sonntag vor dem 25. Dezember
  * zu berechnen
  * @version 1.0
- * @date 2 Dez 30 Nov 2024
+ * @date 4 2 Dez 30 Nov 2024
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
  * @copyright Copyright (c) 2024 B. Borys
  */
@@ -17,9 +17,9 @@
 #define TZONE "CET-1CEST,M3.5.0/02,M10.5.0/03"
 /**
  * @brief auf welchen Tag fällt der 1. Advent object
- * 
+ *
  * @param Jahr in UNIX-Zählung (ab 1970)
- * @return std::tm 
+ * @return std::tm
  */
 std::tm TagErsterAdvent(int year)
 {
@@ -46,44 +46,66 @@ std::tm TagErsterAdvent(int year)
 }
 /**
  * @brief der wievielte Advent war schon?
- * 
+ *
  * @return * uint8_t Nummer (1...4)
  */
 uint8_t Datum()
 {
+    bool zeitOK = false;
+    uint8_t wartezyklen = 0, fehler = 0;
     char buffer[80];
     // time_t enthält die Anzahl der Sekunden seit dem 1.1.1970 0 Uhr
     time_t unixSekunden = 0, t;
     std::tm *jetzt, ersterAdv, Zeit;
     configTzTime(TZONE, TSERVER);
-    WiFi.enableIpV6();
-    WiFi.begin(WLANSSID, WLANPWD);
-    while (WiFi.status() != WL_CONNECTED)
+
+    while (!zeitOK)
     {
-        delay(2000);
-        log_w("Wifi?");
+        log_d("Versuch, die Zeit zu erhalten");
+        WiFi.enableIpV6();
+        WiFi.begin(WLANSSID, WLANPWD);
+        while (WiFi.status() != WL_CONNECTED)
+        {
+            delay(2000);
+            log_w("Wifi?");
+        }
+        log_i("Wifi OK");
+        delay(25000); // Wartezeit um sicherzustellen, dass die Zeit korrekt ist
+
+        wartezyklen = 0;
+        fehler = 0;
+
+        while (unixSekunden < 4000)
+        {
+            if (wartezyklen++ > 4)
+            {
+                log_w("zu lange auf Zeit gewartet");
+                fehler = WiFi.status() != WL_CONNECTED ? 1 : 2;
+                break;
+            }
+
+            log_w("warte %dx auf Zeitserver", wartezyklen);
+            delay(5000);
+            time(&unixSekunden); // aktuelle Zeit lesen
+        }
+
+        zeitOK = (fehler == 0);
+        WiFi.disconnect(true); // Strom sparen
     }
-    log_i("Wifi OK");
-    //    WiFi.disconnect();
-    while (unixSekunden < 4000)
-    {
-        delay(15010);
-        // es dauert etwa 30 s, bis die Zeit stimmt
-        // aktuelle Zeit lesen
-        log_w("Zeit?");
-        time(&unixSekunden);
-    }
-    WiFi.disconnect(true);// Strom sparen
+
+
+
+    log_d("Zeit OK");
     // localtime_r -> Zeit in die lokale Zeitzone setzen
     t = std::time(nullptr);
     jetzt = std::localtime(&t);
-//    localtime_r(&unixSekunden, &Zeit);
-    //strftime(buffer, sizeof(buffer), "&etzt: %Y-%m-%d", &jetzt);
-    //log_d("%s", buffer);
+    //    localtime_r(&unixSekunden, &Zeit);
+    // strftime(buffer, sizeof(buffer), "&etzt: %Y-%m-%d", &jetzt);
+    // log_d("%s", buffer);
     strftime(buffer, sizeof(buffer), "jetzt: %Y-%m-%d", jetzt);
     log_d("%s", buffer);
     ersterAdv = TagErsterAdvent(jetzt->tm_year); // UNIX-Jahr, zählt ab 1900
     strftime(buffer, sizeof(buffer), "1. Advent am %Y-%m-%d", &ersterAdv);
     log_d("%s", buffer);
-    return (jetzt->tm_yday - ersterAdv.tm_yday)/7+1;
+    return (jetzt->tm_yday - ersterAdv.tm_yday) / 7 + 1;
 }
