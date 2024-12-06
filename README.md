@@ -26,4 +26,6 @@ In Arbeit.
 
 ## Quellen
 
+![Hilfsprogramme für Neopixel in Modellbau-Szenen](BBBys/ModellNeopixelRoutinen)
 ![Adafruit Neopixel](adafruit/Adafruit_NeoPixel)
+![Neopixel-Guide](https://learn.adafruit.com/adafruit-neopixel-uberguide/)
