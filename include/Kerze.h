@@ -6,9 +6,10 @@ static const u_int8_t NEOPIXELPIN = 0,NKERZEN=4;
 class Kerze
 {
 private:
-   static const uint8_t Flamme = 3;
-   uint8_t Nr, Start;
-   // rohe Länge der Kerze
+    Adafruit_NeoPixel *Pixels;
+    static const uint8_t Flamme = 2;
+    uint8_t Nr, Start;
+    // rohe Länge der Kerze
     uint8_t Laenge;
    // Prozent Kerze noch nicht abgebrannt
    float Stand;
@@ -16,10 +17,17 @@ private:
    uint8_t Bl;
    bool Brennt;
    public:
-   Kerze(uint8_t nr, uint8_t start, uint8_t laenge, bool brennt);
-   void Brennen(unsigned long zeit);
-    ~Kerze();
-    void Paint(Adafruit_NeoPixel *pixels);
+       Kerze(uint8_t nr, uint8_t start, uint8_t laenge, Adafruit_NeoPixel *Pixels);
+       void Brennen(unsigned long zeit);
+       ~Kerze();
+       void Paint(Adafruit_NeoPixel *pixels);
+       /**
+        * @brief Kerze kann auch zum Signalisieren benutzt werden
+        * 
+        * @param n so viele Pixel an
+        */
+       void Signal(uint8_t n);
+       void Anzuenden();
 };
 //Kerze::~Kerze(){}
 
